@@ -1,4 +1,8 @@
 # Fil-Rouge
 
 # Use-case
-![UseCaseDiagram1](https://github.com/user-attachments/assets/57e6099a-1c09-4fc2-8610-7b5c26b93a40)
+![UseCaseDiagramHello](https://github.com/user-attachments/assets/6a124a4d-98e6-4539-9a40-59d853d757ae)
+
+#Diagram Class
+
+![ClassDiagramHello](https://github.com/user-attachments/assets/c81c9ffb-7160-4d16-9fc0-e2aa82147f3e)
