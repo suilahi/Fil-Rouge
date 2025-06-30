@@ -54,6 +54,11 @@ public class AdminService {
         return membreRepository.findAll();
     }
 
+    public Membre getMembre(Long id) {
+        return membreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + id));
+    }
+
     public void deleteMembre(Long id) {
         if (!membreRepository.existsById(id)) {
             throw new RuntimeException("Membre non trouvé avec l'ID : " + id);
@@ -73,6 +78,11 @@ public class AdminService {
         return entraineurRepository.findAll();
     }
 
+    public Entraineur getEntraineur(Long id) {
+        return entraineurRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'ID : " + id));
+    }
+
     public void deleteEntraineur(Long id) {
         if (!entraineurRepository.existsById(id)) {
             throw new RuntimeException("Entraîneur non trouvé avec l'ID : " + id);
@@ -82,36 +92,68 @@ public class AdminService {
 
     // Méthodes liées aux séances
 
-    public Seance planifierSeance(Long idMembre, Long idCoach, LocalDateTime dateTime) {
+    public Seance planifierSeance(Long idMembre, Long idCoach, LocalDateTime dateTime, Integer capaciteMax) {
+        if (dateTime.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Impossible de planifier une séance dans le passé");
+        }
+
         Membre membre = membreRepository.findById(idMembre)
                 .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + idMembre));
 
         Entraineur entraineur = entraineurRepository.findById(idCoach)
                 .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'ID : " + idCoach));
 
+        List<Seance> seancesEntraineur = seanceRepository.findByEntraineurAndDateBetween(
+                entraineur,
+                dateTime.minusHours(1),
+                dateTime.plusHours(1)
+        );
+
+        if (!seancesEntraineur.isEmpty()) {
+            throw new RuntimeException("L'entraîneur a déjà une séance prévue à cette heure");
+        }
+
         Seance seance = new Seance();
         seance.setMembre(membre);
         seance.setEntraineur(entraineur);
-        seance.setDate(dateTime.toLocalDate().atStartOfDay()); // Conversion LocalDateTime → LocalDate
+        seance.setDate(dateTime);
+        seance.setCapaciteMax(capaciteMax != null ? capaciteMax : 1);
 
         return seanceRepository.save(seance);
     }
 
-    public Seance modifierSeance(Long idSeance, Seance nouvellesInfos) {
+    public Seance modifierSeance(Long idSeance, Long idMembre, Long idCoach, LocalDateTime date, Integer capaciteMax) {
         Seance seance = seanceRepository.findById(idSeance)
                 .orElseThrow(() -> new RuntimeException("Séance non trouvée avec l'ID : " + idSeance));
 
-        seance.setDate(nouvellesInfos.getDate());
-        seance.setEntraineur(nouvellesInfos.getEntraineur());
-        seance.setMembre(nouvellesInfos.getMembre());
+        Membre membre = membreRepository.findById(idMembre)
+                .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + idMembre));
+
+        Entraineur entraineur = entraineurRepository.findById(idCoach)
+                .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'ID : " + idCoach));
+
+        seance.setDate(date);
+        seance.setMembre(membre);
+        seance.setEntraineur(entraineur);
+        seance.setCapaciteMax(capaciteMax);
 
         return seanceRepository.save(seance);
     }
+
 
     public void annulerSeance(Long idSeance) {
         if (!seanceRepository.existsById(idSeance)) {
             throw new RuntimeException("Séance non trouvée avec l'ID : " + idSeance);
         }
         seanceRepository.deleteById(idSeance);
+    }
+
+    public List<Seance> getAllSeances() {
+        return seanceRepository.findAll();
+    }
+
+    public Seance getSeance(Long id) {
+        return seanceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Séance non trouvée avec l'ID : " + id));
     }
 }

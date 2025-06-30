@@ -12,15 +12,17 @@ public class Seance {
 
     private LocalDateTime date;
 
-    private Integer capaciteMax;
+    private Integer capaciteMax; // Corrigé: Integer au lieu de Long
 
     @ManyToOne
+    @JoinColumn(name = "entraineur_id")
     private Entraineur entraineur;
 
     @ManyToOne
+    @JoinColumn(name = "membre_id")
     private Membre membre;
 
-    // Getters & Setters
+    public Seance() {} // Constructeur vide nécessaire
 
     public Long getIdSeance() {
         return idSeance;

@@ -1,4 +1,5 @@
 package org.FilRouge.backend.Controller;
+import jakarta.validation.Valid;
 import org.FilRouge.backend.Dto.SeanceRequest;
 import org.FilRouge.backend.Model.*;
 import org.FilRouge.backend.Service.AdminService;
@@ -16,11 +17,27 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    // Test endpoint
+    @GetMapping("/test")
+    public String test() {
+        return "Backend is working!";
+    }
+
     // Membres
 
     @PostMapping("/membres")
     public Membre addMembre(@RequestBody Membre membre) {
         return adminService.addMembre(membre);
+    }
+
+    @GetMapping("/membres")
+    public List<Membre> getAllMembres() {
+        return adminService.getAllMembre();
+    }
+
+    @GetMapping("/membres/{id}")
+    public Membre getMembre(@PathVariable Long id) {
+        return adminService.getMembre(id);
     }
 
     @DeleteMapping("/membres/{id}")
@@ -35,6 +52,16 @@ public class AdminController {
         return adminService.addEntraineur(entraineur);
     }
 
+    @GetMapping("/entraineurs")
+    public List<Entraineur> getAllEntraineurs() {
+        return adminService.getAllEntraineur();
+    }
+
+    @GetMapping("/entraineurs/{id}")
+    public Entraineur getEntraineur(@PathVariable Long id) {
+        return adminService.getEntraineur(id);
+    }
+
     @DeleteMapping("/entraineurs/{id}")
     public void deleteEntraineur(@PathVariable Long id) {
         adminService.deleteEntraineur(id);
@@ -43,16 +70,27 @@ public class AdminController {
     // Séances
 
     @PostMapping("/seances")
-    public Seance planifierSeance(@RequestBody SeanceRequest request) {
+    public Seance planifierSeance(@Valid @RequestBody SeanceRequest request) {
         LocalDateTime date = LocalDateTime.parse(request.getDateTime());
-        return adminService.planifierSeance(request.getIdMembre(), request.getIdEntraineur(), date);
+        return adminService.planifierSeance(request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
     }
 
+    @GetMapping("/seances")
+    public List<Seance> getAllSeances() {
+        return adminService.getAllSeances();
+    }
+
+    @GetMapping("/seances/{id}")
+    public Seance getSeance(@PathVariable Long id) {
+        return adminService.getSeance(id);
+    }
 
     @PutMapping("/seances/{id}")
-    public Seance modifierSeance(@PathVariable Long id, @RequestBody Seance seance) {
-        return adminService.modifierSeance(id, seance);
+    public Seance modifierSeance(@PathVariable Long id, @Valid @RequestBody SeanceRequest request) {
+        LocalDateTime date = LocalDateTime.parse(request.getDateTime());
+        return adminService.modifierSeance(id, request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
     }
+
 
     @DeleteMapping("/seances/{id}")
     public void annulerSeance(@PathVariable Long id) {
@@ -62,7 +100,7 @@ public class AdminController {
     // Matériel
 
     @PostMapping("/materiels")
-    public Materiel addMateriel(@RequestBody Materiel materiel) {
+    public Materiel addMateriel(@Valid @RequestBody Materiel materiel) {
         return adminService.Addmateriel(materiel);
     }
 

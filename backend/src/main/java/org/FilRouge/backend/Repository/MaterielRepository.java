@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MaterielRepository extends JpaRepository<Materiel, Long> {
-    List<Materiel> findByQuantiteLessThan(int seuil);
+    List<Materiel> findByQuantiteLessThan (int seuil);
 }
