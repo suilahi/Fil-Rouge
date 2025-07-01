@@ -1,0 +1,100 @@
+/* footer.component.css */
+
+/* Animation pour les effets bokeh */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.absolute div {
+  animation: float 3s ease-in-out infinite;
+}
+
+.absolute div:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.absolute div:nth-child(3) {
+  animation-delay: 1s;
+}
+
+.absolute div:nth-child(4) {
+  animation-delay: 1.5s;
+}
+
+.absolute div:nth-child(5) {
+  animation-delay: 2s;
+}
+
+.absolute div:nth-child(6) {
+  animation-delay: 2.5s;
+}
+
+.absolute div:nth-child(7) {
+  animation-delay: 3s;
+}
+
+/* Effet de survol pour les liens sociaux */
+.group:hover svg {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Style pour le champ email */
+input[type="email"]:focus {
+  box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.2);
+}
+
+/* Animation pour le bouton de soumission */
+button[type="submit"]:hover svg {
+  transform: translateX(4px);
+}
+
+/* Effet de survol pour les images Flickr */
+.group img {
+  transition: all 0.3s ease;
+}
+
+.group:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+  }
+
+  .space-x-4 {
+    gap: 0.75rem;
+  }
+
+  .w-12.h-12 {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+/* Effet de brillance sur les icônes sociales */
+.group {
+  position: relative;
+  overflow: hidden;
+}
+
+.group::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.group:hover::before {
+  left: 100%;
+}
