@@ -13,26 +13,31 @@
 </section>
 
 <!-- Building Section -->
-<section class="py-20 bg-gray-100">
+<section class="py-4   bg-orange-400">
   <div class="container mx-auto px-4">
     <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-white p-6 text-center shadow-md">
-        <img src="assets/images/build1.png" alt="Body Building" class="mx-auto mb-4">
-        <h4 class="text-xl font-bold mb-2">Body Building</h4>
-        <p class="mb-4">Lorem ipsum dolor sit amet, ei veritus consetetur repudiandae eam.</p>
-        <a href="/classes-detail" class="inline-block bg-black text-white px-4 py-2 rounded">View Detail</a>
+      <!-- Card 1 -->
+      <div class="bg-white p-8 text-center shadow-md">
+        <img src="assets/images/build1.png" alt="Body Building" class="mx-auto mb-6 h-20">
+        <h4 class="text-xl font-bold text-gray-800 mb-4 uppercase">Body Building</h4>
+        <p class="text-gray-600 mb-6">Lorem ipsum dolor sit amet, ei veritus consetetur repudiandae eam, duo ne homero nostro moderatius.</p>
+        <a href="/classes-detail" class="inline-block border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition px-5 py-2 rounded">View Detail</a>
       </div>
-      <div class="bg-white p-6 text-center shadow-md">
-        <img src="assets/images/build2.png" alt="Fitness & Boxing" class="mx-auto mb-4">
-        <h4 class="text-xl font-bold mb-2">Fitness & Boxing</h4>
-        <p class="mb-4">Lorem ipsum dolor sit amet, ei veritus consetetur repudiandae eam.</p>
-        <a href="/classes-detail" class="inline-block bg-black text-white px-4 py-2 rounded">View Detail</a>
+
+      <!-- Card 2 -->
+      <div class="bg-white p-8 text-center shadow-md">
+        <img src="assets/images/build2.png" alt="Fitness & Boxing" class="mx-auto mb-6 h-20">
+        <h4 class="text-xl font-bold text-gray-800 mb-4 uppercase">Fitness & Boxing</h4>
+        <p class="text-gray-600 mb-6">Lorem ipsum dolor sit amet, ei veritus consetetur repudiandae eam, duo ne homero nostro moderatius.</p>
+        <a href="/classes-detail" class="inline-block border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition px-5 py-2 rounded">View Detail</a>
       </div>
-      <div class="bg-white p-6 text-center shadow-md">
-        <img src="assets/images/build3.png" alt="Yoga" class="mx-auto mb-4">
-        <h4 class="text-xl font-bold mb-2">Yoga</h4>
-        <p class="mb-4">Lorem ipsum dolor sit amet, ei veritus consetetur repudiandae eam.</p>
-        <a href="/classes-detail" class="inline-block bg-black text-white px-4 py-2 rounded">View Detail</a>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-8 text-center shadow-md">
+        <img src="assets/images/build3.png" alt="Yoga" class="mx-auto mb-6 h-20">
+        <h4 class="text-xl font-bold text-gray-800 mb-4 uppercase">Yoga</h4>
+        <p class="text-gray-600 mb-6">Lorem ipsum dolor sit amet, ei veritus consetetur repudiandae eam, duo ne homero nostro moderatius.</p>
+        <a href="/classes-detail" class="inline-block border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition px-5 py-2 rounded">View Detail</a>
       </div>
     </div>
   </div>
@@ -81,27 +86,35 @@
 </section>
 
 <!-- Trainers Section -->
-<section class="py-20 bg-gray-100">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-12">
-      <h3 class="text-3xl font-bold border-b-2 inline-block border-yellow-500 pb-2">Expert Trainers</h3>
+<section class="py-20  bg-cover bg-center text-white relative" style="background-image: url('assets/images/trainers_bg.png')">
+  <div class="absolute inset-0 bg-black/70"></div>
+
+  <div class="relative z-10 container mx-auto px-4">
+    <div class="flex justify-between items-center mb-8">
+      <h3 class="text-2xl md:text-3xl font-extrabold uppercase">Expert Trainers</h3>
+      <div class="space-x-2 hidden md:block">
+        <button class="w-8 h-8 border border-white rounded-full text-white hover:bg-white hover:text-black transition">&lt;</button>
+        <button class="w-8 h-8 border border-white rounded-full text-white hover:bg-white hover:text-black transition">&gt;</button>
+      </div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-      <div class="text-center">
-        <img src="assets/images/trainer1.png" alt="" class="mx-auto mb-2">
-        <p class="font-semibold">Justin Hessen</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <!-- Trainer Card -->
+      <div class="bg-white shadow-lg">
+        <img src="/assets/images/trainer1.png" alt="Justin Hessen" class="w-full h-[300px] object-cover">
+        <div class="bg-orange-500 text-white text-center py-2 font-semibold">Justin Hessen</div>
       </div>
-      <div class="text-center">
-        <img src="assets/images/trainer2.png" alt="" class="mx-auto mb-2">
-        <p class="font-semibold">Romia Rose</p>
+      <div class="bg-white shadow-lg">
+        <img src="/assets/images/trainer2.png" alt="Romia Rose" class="w-full h-[300px] object-cover">
+        <div class="bg-orange-500 text-white text-center py-2 font-semibold">Romia Rose</div>
       </div>
-      <div class="text-center">
-        <img src="assets/images/trainer3.png" alt="" class="mx-auto mb-2">
-        <p class="font-semibold">Simron Wigs</p>
+      <div class="bg-white shadow-lg">
+        <img src="/assets/images/trainer3.png" alt="Simron Wigs" class="w-full h-[300px] object-cover">
+        <div class="bg-orange-500 text-white text-center py-2 font-semibold">Simron Wigs</div>
       </div>
-      <div class="text-center">
-        <img src="assets/images/trainer4.png" alt="" class="mx-auto mb-2">
-        <p class="font-semibold">John Smile</p>
+      <div class="bg-white shadow-lg">
+        <img src="/assets/images/trainer4.png" alt="John Smile" class="w-full h-[300px] object-cover">
+        <div class="bg-orange-500 text-white text-center py-2 font-semibold">John Smile</div>
       </div>
     </div>
   </div>
