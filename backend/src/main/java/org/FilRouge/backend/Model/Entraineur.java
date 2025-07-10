@@ -1,5 +1,7 @@
 package org.FilRouge.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class Entraineur extends User {
     private String specialite;
 
     @OneToMany(mappedBy = "entraineur")
+    @JsonIgnore
     private List<Seance> seances;
 
     // Getters & Setters

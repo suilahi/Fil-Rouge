@@ -10,7 +10,7 @@ public class Seance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSeance;
 
-    private LocalDateTime date;
+        private LocalDateTime date;
 
     private Integer capaciteMax; // Corrigé: Integer au lieu de Long
 
@@ -23,6 +23,13 @@ public class Seance {
     private Membre membre;
 
     public Seance() {} // Constructeur vide nécessaire
+
+    public Seance(String date, String capaciteMax, String entraineurId, String membreId) {
+        this.date = LocalDateTime.parse(date);
+        this.capaciteMax = Integer.parseInt(capaciteMax);
+        this.entraineur = new Entraineur();
+        this.membre = new Membre();
+    }
 
     public Long getIdSeance() {
         return idSeance;
