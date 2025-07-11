@@ -29,17 +29,27 @@ public class AuthService {
     }
 
     public AuthResponseDTO register(RegisterDto registerDTO) {
+        // Empêcher la création d'un deuxième compte admin
+        if ("ADMIN".equalsIgnoreCase(registerDTO.role()) || "ROLE_ADMIN".equalsIgnoreCase(registerDTO.role())) {
+            if (userRepository.existsByRole("ROLE_ADMIN") || userRepository.existsByRole("ADMIN")) {
+                throw new SecurityException("Un administrateur existe déjà. Vous ne pouvez pas en créer un autre.");
+            }
+        }
+
         User utilisateur = new User();
         utilisateur.setFullName(registerDTO.fullName());
         utilisateur.setPassword(passwordEncoder.encode(registerDTO.password()));
         utilisateur.setEmail(registerDTO.email());
-        utilisateur.setRole(registerDTO.role());  // role attendu au format "ROLE_MEMBRE"
+
+        // Sécurité : toujours forcer le format ROLE_*
+        utilisateur.setRole(registerDTO.role().toUpperCase()); // Pour uniformiser "admin" → "ADMIN"
 
         var savedUser = userRepository.save(utilisateur);
         var jwtToken = jwtService.generateToken(savedUser);
 
         return new AuthResponseDTO(jwtToken, savedUser.getRole());
     }
+
 
     public AuthResponseDTO login(LoginRequestDTO loginRequestDTO) {
         authenticationManager.authenticate(
