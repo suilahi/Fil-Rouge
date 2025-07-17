@@ -4,6 +4,7 @@ import org.FilRouge.backend.Dto.SeanceRequest;
 import org.FilRouge.backend.Model.*;
 import org.FilRouge.backend.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     // Test endpoint
     @GetMapping("/test")
     public String test() {
@@ -68,6 +71,7 @@ public class AdminController {
     }
 
     // Séances
+    @PreAuthorize("hasRole('ADMIN')")
 
     @PostMapping("/seances")
     public Seance planifierSeance(@Valid @RequestBody SeanceRequest request) {

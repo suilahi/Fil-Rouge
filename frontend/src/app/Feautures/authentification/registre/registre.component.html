@@ -3,29 +3,63 @@
     <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Créer un compte</h2>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+      <!-- Nom complet -->
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Nom complet</label>
-        <input formControlName="name" id="name" type="text"
+        <label for="fullname" class="block text-sm font-medium text-gray-700">Nom complet</label>
+        <input formControlName="fullname" id="fullname" type="text"
                class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div *ngIf="registerForm.get('fullname')?.invalid && registerForm.get('fullname')?.touched"
+             class="text-red-500 text-sm mt-1">
+          Le nom est requis.
+        </div>
       </div>
 
+      <!-- Email -->
       <div>
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
         <input formControlName="email" id="email" type="email"
                class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+             class="text-red-500 text-sm mt-1">
+          Un email valide est requis.
+        </div>
       </div>
 
+      <!-- Mot de passe -->
       <div>
         <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
         <input formControlName="password" id="password" type="password"
                class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+             class="text-red-500 text-sm mt-1">
+          Le mot de passe doit contenir au moins 6 caractères.
+        </div>
       </div>
 
+      <!-- Rôle -->
+      <div>
+        <label for="role" class="block text-sm font-medium text-gray-700">Rôle</label>
+        <select formControlName="role" id="role"
+                class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">-- Sélectionner un rôle --</option>
+          <option value="MEMBRE">Membre</option>
+          <option value="FORMATEUR">ENTRAINEUR</option>
+        </select>
+        <div *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched"
+             class="text-red-500 text-sm mt-1">
+          Le rôle est requis.
+        </div>
+      </div>
 
-
+      <!-- Bouton -->
       <button type="submit"
-              class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">S'inscrire</button>
+              [disabled]="registerForm.invalid"
+              class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+        S'inscrire
+      </button>
 
+      <!-- Lien vers login -->
       <p class="text-center text-sm text-gray-600 mt-4">
         Déjà un compte ?
         <a routerLink="/login" class="text-blue-600 hover:underline">Se connecter</a>

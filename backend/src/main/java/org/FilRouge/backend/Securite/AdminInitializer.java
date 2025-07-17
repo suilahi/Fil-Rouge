@@ -19,6 +19,8 @@ public class AdminInitializer {
                 admin.setPassword(passwordEncoder.encode("admin123"));
                 admin.setRole("ADMIN");
 
+
+
                 userRepository.save(admin);
                 System.out.println("✅ Admin user created: suilahizakaria@gmail.com / admin123");
             } else {
