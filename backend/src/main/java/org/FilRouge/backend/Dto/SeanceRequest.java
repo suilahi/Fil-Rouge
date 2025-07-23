@@ -14,7 +14,7 @@ public class SeanceRequest {
     private String dateTime;
 
     @NotNull(message = "La capacité est requise")
-    @Min(value = 1, message = "La capacité doit être au moins 1")
+    @Min(value = 10, message = "La capacité doit être au moins 10")
     private Integer capaciteMax;
 
     public SeanceRequest() {}

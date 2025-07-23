@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Table(name="utilisateur")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails {
