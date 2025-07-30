@@ -2,6 +2,7 @@ package org.FilRouge.backend.Model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Seance {
@@ -21,6 +22,10 @@ public class Seance {
     @ManyToOne
     @JoinColumn(name = "membre_id")
     private Membre membre;
+
+    @OneToMany(mappedBy = "seance")
+    private List<Reservation> reservations;
+
 
     public Seance() {} // Constructeur vide nécessaire
 

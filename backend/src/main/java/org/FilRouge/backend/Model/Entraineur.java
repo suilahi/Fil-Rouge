@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("ENTRAINEUR")
-
 public class Entraineur extends User {
 
     private String specialite;

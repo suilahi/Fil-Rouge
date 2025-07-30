@@ -50,13 +50,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 Claims claims = jwtService.extractAllClaims(jwt);
-                var roles = claims.get("roles", List.class);  // roles depuis token (liste)
 
-                var authorities = roles.stream()
-                        .map(role -> new SimpleGrantedAuthority(role.toString()))
-                        .toList();
+                // Récupérer la liste des autorités dans le JWT
+                List<String> authoritiesClaim = claims.get("authorities", List.class);
+
+                List<SimpleGrantedAuthority> authorities = List.of(); // Par défaut vide
+                if (authoritiesClaim != null) {
+                    authorities = authoritiesClaim.stream()
+                            .map(SimpleGrantedAuthority::new)
+                            .toList();
+                }
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -64,6 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         authorities
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // Placer l'authentification dans le contexte de sécurité
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
@@ -71,4 +79,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-

@@ -15,6 +15,7 @@ public class Membre extends User {
     @OneToMany(mappedBy = "membre")
     private List<Seance> seances;
 
+
     @ManyToOne
     private Abonnement abonnement;
 

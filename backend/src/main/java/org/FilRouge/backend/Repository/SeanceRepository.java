@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface SeanceRepository extends JpaRepository<Seance, Long> {
     List<Seance> findByEntraineurAndDateBetween(Entraineur entraineur, LocalDateTime start, LocalDateTime end);
+
 }

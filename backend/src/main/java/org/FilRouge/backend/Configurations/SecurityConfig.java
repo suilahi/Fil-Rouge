@@ -47,10 +47,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 👉 Autoriser l'inscription et le login pour tous sans authentification
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-
                         // 👉 Routes protégées selon les rôles
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-
                         // 👉 Swagger (optionnel)
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
 

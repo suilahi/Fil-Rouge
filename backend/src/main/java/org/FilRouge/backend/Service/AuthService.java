@@ -41,8 +41,12 @@ public class AuthService {
         utilisateur.setPassword(passwordEncoder.encode(registerDTO.password()));
         utilisateur.setEmail(registerDTO.email());
 
-        // Sécurité : toujours forcer le format ROLE_*
-        utilisateur.setRole(registerDTO.role().toUpperCase()); // Pour uniformiser "admin" → "ADMIN"
+        // Sécurité : toujours forcer le format ADMIN (sans ROLE_ car getAuthorities() l'ajoute automatiquement)
+        String role = registerDTO.role().toUpperCase();
+        if (role.startsWith("ROLE_")) {
+            role = role.substring(5); // Enlever le préfixe ROLE_ s'il existe
+        }
+        utilisateur.setRole(role); // Stocker "ADMIN" au lieu de "ROLE_ADMIN"
 
         var savedUser = userRepository.save(utilisateur);
         var jwtToken = jwtService.generateToken(savedUser);

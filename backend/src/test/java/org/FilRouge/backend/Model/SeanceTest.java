@@ -37,7 +37,7 @@ class SeanceTest {
         Membre savedMembre = membreRepository.save(membre);
 
         // Créer un entraîneur de test
-        Entraineur entraineur = new Entraineur();
+         Entraineur entraineur = new Entraineur();
         entraineur.setEmail("coach@test.com");
         entraineur.setPassword("1234");
         Entraineur savedCoach = entraineurRepository.save(entraineur);

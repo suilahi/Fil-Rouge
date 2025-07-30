@@ -28,6 +28,10 @@ public class JwtService {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("fullName", user.getFullName());
         extraClaims.put("role", user.getRole());
+        // Ajouter les autorités dans le JWT
+        extraClaims.put("authorities", user.getAuthorities().stream()
+                .map(Object::toString)
+                .toList());
         return generateToken(extraClaims, user.getEmail());
     }
 

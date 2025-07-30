@@ -13,17 +13,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin")
 @CrossOrigin(origins = "*")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     @Autowired
     private AdminService adminService;
 
 
-    @PreAuthorize("hasRole('ADMIN')")
-    // Test endpoint
+
     @GetMapping("/test")
     public String test() {
-        return "Backend is working!";
+        return "Backend is working! Admin access confirmed!";
+    }
+
+    @GetMapping("/debug-auth")
+    public String debugAuth() {
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        return "User: " + auth.getName() + ", Authorities: " + auth.getAuthorities();
     }
 
     // Membres
@@ -33,7 +39,7 @@ public class AdminController {
         return adminService.addMembre(membre);
     }
 
-    @GetMapping("/membres")
+    @GetMapping(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "/membres")
     public List<Membre> getAllMembres() {
         return adminService.getAllMembre();
     }
@@ -71,7 +77,6 @@ public class AdminController {
     }
 
     // Séances
-    @PreAuthorize("hasRole('ADMIN')")
 
     @PostMapping("/seances")
     public Seance planifierSeance(@Valid @RequestBody SeanceRequest request) {
