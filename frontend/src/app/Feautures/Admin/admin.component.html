@@ -1,0 +1,111 @@
+<section class="py-20  bg-cover bg-center text-white relative" style="background-image: url('assets/images/trainers_bg.png')">
+<div class="p-6  min-h-screen">
+  <!-- Bouton pour ouvrir le modal -->
+  <button onclick="document.getElementById('modal').classList.remove('hidden')"
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+    ➕ Ajouter une Séance
+  </button>
+
+  <!-- Overlay + Modal -->
+  <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <!-- Boîte du modal -->
+    <div class="bg-white rounded-xl shadow-lg max-w-xl w-full p-6 relative">
+
+      <!-- Bouton pour fermer -->
+      <button onclick="document.getElementById('modal').classList.add('hidden')"
+              class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+
+      <h2 class="text-xl font-bold mb-4 text-pink-950 text-center">➕ Ajouter une Séance</h2>
+
+      <form [formGroup]="seanceForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+          <label class="block mb-1 text-purple-600 font-medium">Date et Heure</label>
+          <input type="datetime-local" formControlName="dateTime" class="w-full text-gray-950 border p-2 rounded" required />
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-purple-600 font-medium">Capacité Max</label>
+          <input type="number" formControlName="capaciteMax" class="w-full border text-gray-950 p-2 rounded" required />
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-purple-600 font-medium">ID Entraîneur</label>
+          <input type="number" formControlName="idEntraineur" class="w-full border text-gray-950 p-2 rounded" required />
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-950">Nom de la Séance</label>
+          <select formControlName="nomSeance" class="w-full border p-2 rounded text-gray-950" required>
+            <option value="MUSCULATION">Musculation</option>
+            <option value="YUGA">Yuga</option>
+            <option value="RUNNING">Running</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-purple-600 font-medium">ID Membre</label>
+          <input type="number" formControlName="idMembre" class="w-full text-gray-950 border p-2 rounded" required />
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          ➕ Ajouter
+        </button>
+      </form>
+      </div>
+  </div>
+
+
+  <div class="flex items-center justify-center gap-2 mb-6">
+    <svg class="w-5 h-5 text-blue-800 dark:text-blue-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+         viewBox="0 0 20 20">
+      <path
+        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+    </svg>
+    <h1 class="text-2xl font-bold text-center text-white">Liste des Séances</h1>
+  </div>
+
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let seance of seances" class="bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition">
+<!--      <img src="assets/images/feature-thumb1.png" alt="" class="w-full">-->
+      <div *ngIf="seance.nomSeance === 'MUSCULATION'">
+        <img src="assets/images/feature-thumb1.png" alt="" class="w-full">
+      </div>
+      <div *ngIf="seance.nomSeance === 'YUGA'">
+        <img src="assets/images/feature-thumb2.png" alt="" class="w-full">
+      </div>
+      <div *ngIf="seance.nomSeance === 'RUNNING'">
+        <img src="assets/images/feature-thumb3.png" alt="" class="w-full">
+      </div>
+      <h2 class="text-xl font-semibold text-blue-700 mb-2">Séance #{{ seance.idSeance }}</h2>
+      <p class="text-gray-700"><strong>Nom :</strong> {{ seance.nomSeance }}</p>
+      <p class="text-gray-700"><strong>Heure :</strong> {{ seance.dateTime | date:'short' }}</p>
+      <p class="text-gray-700"><strong>Capacité :</strong> {{ seance.capaciteMax }}</p>
+      <p class="text-gray-700"><strong>Entraîneur ID :</strong> {{ seance.idEntraineur }}</p>
+      <p class="text-gray-700"><strong>Membre ID :</strong> {{ seance.idMembre }}</p>
+
+      <div class="flex gap-2">
+        <button
+          type="button"
+          (click)="onEdit(seance)"
+          class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded transition-colors">
+          ✏️ Modifier
+        </button>
+
+        <button
+          type="button"
+          (click)="onDelete(seance.idSeance)"
+          class="flex-1 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition-colors">
+          🗑️ Supprimer
+        </button>
+      </div>
+
+    </div>
+
+  <div *ngIf="seances.length === 0" class="text-center text-gray-500 mt-6">
+    Aucune séance disponible.
+  </div>
+
+</div>
+</div>
+</section>

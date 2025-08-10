@@ -1,5 +1,6 @@
 package org.FilRouge.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +14,7 @@ public class Membre extends User {
     private LocalDate dateFin;
 
     @OneToMany(mappedBy = "membre")
+    @JsonIgnore
     private List<Seance> seances;
 
 

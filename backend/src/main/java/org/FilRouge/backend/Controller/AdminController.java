@@ -1,6 +1,7 @@
 package org.FilRouge.backend.Controller;
 import jakarta.validation.Valid;
 import org.FilRouge.backend.Dto.SeanceRequest;
+import org.FilRouge.backend.Dto.SeanceResponse;
 import org.FilRouge.backend.Model.*;
 import org.FilRouge.backend.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -18,19 +20,6 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
-
-
-
-    @GetMapping("/test")
-    public String test() {
-        return "Backend is working! Admin access confirmed!";
-    }
-
-    @GetMapping("/debug-auth")
-    public String debugAuth() {
-        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
-        return "User: " + auth.getName() + ", Authorities: " + auth.getAuthorities();
-    }
 
     // Membres
 
@@ -81,12 +70,20 @@ public class AdminController {
     @PostMapping("/seances")
     public Seance planifierSeance(@Valid @RequestBody SeanceRequest request) {
         LocalDateTime date = LocalDateTime.parse(request.getDateTime());
-        return adminService.planifierSeance(request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
+        return adminService.planifierSeance(request.getNomSeance(), request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
     }
 
+//    @GetMapping("/seances")
+//    public List<Seance> getAllSeances() {
+//        return adminService.getAllSeances();
+//    }
+
     @GetMapping("/seances")
-    public List<Seance> getAllSeances() {
-        return adminService.getAllSeances();
+    public List<SeanceResponse> getAllSeances() {
+        return adminService.getAllSeances()
+                .stream()
+                .map(SeanceResponse::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/seances/{id}")
@@ -97,7 +94,7 @@ public class AdminController {
     @PutMapping("/seances/{id}")
     public Seance modifierSeance(@PathVariable Long id, @Valid @RequestBody SeanceRequest request) {
         LocalDateTime date = LocalDateTime.parse(request.getDateTime());
-        return adminService.modifierSeance(id, request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
+        return adminService.modifierSeance(request.getNomSeance(),id, request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
     }
 
 

@@ -92,7 +92,7 @@ public class AdminService {
 
     // Méthodes liées aux séances
 
-    public Seance planifierSeance(Long idMembre, Long idCoach, LocalDateTime dateTime, Integer capaciteMax) {
+    public Seance planifierSeance(String nomSeance, Long idMembre, Long idCoach, LocalDateTime dateTime, Integer capaciteMax) {
         if (dateTime.isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Impossible de planifier une séance dans le passé");
         }
@@ -114,6 +114,7 @@ public class AdminService {
         }
 
         Seance seance = new Seance();
+        seance.setNomSeance(nomSeance);
         seance.setMembre(membre);
         seance.setEntraineur(entraineur);
         seance.setDate(dateTime);
@@ -122,7 +123,7 @@ public class AdminService {
         return seanceRepository.save(seance);
     }
 
-    public Seance modifierSeance(Long idSeance, Long idMembre, Long idCoach, LocalDateTime date, Integer capaciteMax) {
+    public Seance modifierSeance(String nomSeance,Long idSeance, Long idMembre, Long idCoach, LocalDateTime date, Integer capaciteMax) {
         Seance seance = seanceRepository.findById(idSeance)
                 .orElseThrow(() -> new RuntimeException("Séance non trouvée avec l'ID : " + idSeance));
 
@@ -132,6 +133,7 @@ public class AdminService {
         Entraineur entraineur = entraineurRepository.findById(idCoach)
                 .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'ID : " + idCoach));
 
+        seance.setNomSeance(nomSeance);
         seance.setDate(date);
         seance.setMembre(membre);
         seance.setEntraineur(entraineur);

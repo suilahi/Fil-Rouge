@@ -9,6 +9,8 @@ public class SeanceRequest {
 
     @NotNull(message = "L'ID de l'entraîneur est requis")
     private Long idEntraineur;
+    @NotNull(message = "Entrer le nom")
+    private String nomSeance;
 
     @NotBlank(message = "La date est requise au format ISO ex: 2025-07-01T14:00:00")
     private String dateTime;
@@ -49,5 +51,12 @@ public class SeanceRequest {
 
     public void setCapaciteMax(Integer capaciteMax) {
         this.capaciteMax = capaciteMax;
+    }
+
+    public String getNomSeance() {
+        return nomSeance;
+    }
+    public void setNomSeance(String nomSeance) {
+        this.nomSeance = nomSeance;
     }
 }

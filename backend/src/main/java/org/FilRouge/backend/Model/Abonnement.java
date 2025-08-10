@@ -1,5 +1,6 @@
 package org.FilRouge.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class Abonnement {
     private Double prix;
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "abonnement")
     private List<Membre> membres;
 

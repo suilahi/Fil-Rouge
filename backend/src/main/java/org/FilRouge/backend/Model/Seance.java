@@ -1,5 +1,6 @@
 package org.FilRouge.backend.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,25 +12,31 @@ public class Seance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSeance;
 
-        private LocalDateTime date;
+    private String nomSeance;
+
+    private LocalDateTime date;
 
     private Integer capaciteMax; // Corrigé: Integer au lieu de Long
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "entraineur_id")
     private Entraineur entraineur;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "membre_id")
     private Membre membre;
 
     @OneToMany(mappedBy = "seance")
+    @JsonIgnore
     private List<Reservation> reservations;
 
 
     public Seance() {} // Constructeur vide nécessaire
 
-    public Seance(String date, String capaciteMax, String entraineurId, String membreId) {
+    public Seance(String nomSeance ,String date, String capaciteMax, String entraineurId, String membreId) {
+        this.nomSeance = nomSeance;
         this.date = LocalDateTime.parse(date);
         this.capaciteMax = Integer.parseInt(capaciteMax);
         this.entraineur = new Entraineur();
@@ -74,5 +81,20 @@ public class Seance {
 
     public void setMembre(Membre membre) {
         this.membre = membre;
+    }
+    public String getNomSeance() {
+        return nomSeance;
+    }
+
+    public void setNomSeance(String nomSeance) {
+        this.nomSeance = nomSeance;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
