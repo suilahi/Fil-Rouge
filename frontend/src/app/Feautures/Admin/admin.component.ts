@@ -53,11 +53,13 @@ export class AdminComponent implements OnInit {
   loadSeances() {
     this.authservice.getSeances().subscribe({
       next: (data) => {
-        this.seances = data;
+        const now = new Date();
+        this.seances = data.filter(seance => new Date(seance.dateTime) >= now);
       },
       error: err => console.error('Erreur lors du chargement des séances :', err)
     });
   }
+
 
 
   onEdit(seance: Seance) {

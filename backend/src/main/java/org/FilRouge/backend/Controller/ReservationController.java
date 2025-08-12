@@ -1,6 +1,7 @@
 package org.FilRouge.backend.Controller;
 
 
+import org.FilRouge.backend.Model.Reservation;
 import org.FilRouge.backend.Service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,11 @@ public class ReservationController {
             @PathVariable Long membreId,
             @PathVariable Long seanceId) {
 
-        String result = reservationService.reserverSeance(membreId, seanceId);
-
-        if ("Réservation réussie.".equals(result)) {
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.badRequest().body(result);
+        try {
+            Reservation result = reservationService.reserverSeance(membreId, seanceId);
+            return ResponseEntity.ok("Réservation réussie.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-}
+    }

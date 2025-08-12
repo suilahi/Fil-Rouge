@@ -22,39 +22,25 @@ public class ReservationService {
     @Autowired
     private SeanceRepository seanceRepository;
 
-    public String reserverSeance(Long membreId, Long seanceId) {
-        Optional<Membre> membreOpt = membreRepository.findById(membreId);
-        Optional<Seance> seanceOpt = seanceRepository.findById(seanceId);
+    public Reservation reserverSeance(Long membreId, Long seanceId) {
+        Membre membre = membreRepository.findById(membreId)
+                .orElseThrow(() -> new RuntimeException("Membre introuvable"));
 
-        if (membreOpt.isEmpty()) {
-            return "Membre non trouvé";
-        }
-        if (seanceOpt.isEmpty()) {
-            return "Séance non trouvée";
-        }
+        Seance seance = seanceRepository.findById(seanceId)
+                .orElseThrow(() -> new RuntimeException("Séance introuvable"));
 
-        Membre membre = membreOpt.get();
-        Seance seance = seanceOpt.get();
-
-        // Vérifier si le membre a déjà réservé la séance
-        if (reservationRepository.existsByMembreAndSeance(membre, seance)) {
-            return "Vous avez déjà réservé cette séance.";
+        // Vérifier si le membre a déjà une réservation pour cette séance
+        boolean alreadyReserved = reservationRepository.existsByMembreIdAndSeanceId(membreId, seanceId);
+        if (alreadyReserved) {
+            throw new RuntimeException("Vous avez déjà réservé cette séance.");
         }
 
-        // Vérifier la capacité max de la séance
-        long nbReservations = reservationRepository.countBySeance(seance);
-        if (nbReservations >= seance.getCapaciteMax()) {
-            return "La séance est complète.";
+        long countReservations = reservationRepository.countBySeanceId(seanceId);
+        if (countReservations >= seance.getCapaciteMax()) {
+            throw new RuntimeException("Capacité maximale atteinte");
         }
 
-        // Créer la réservation
-        Reservation reservation = new Reservation();
-        reservation.setMembre(membre);
-        reservation.setSeance(seance);
-
-        reservationRepository.save(reservation);
-
-        return "Réservation réussie.";
+        Reservation reservation = new Reservation(membre, seance);
+        return reservationRepository.save(reservation);
     }
-
 }

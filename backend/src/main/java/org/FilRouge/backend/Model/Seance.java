@@ -16,7 +16,7 @@ public class Seance {
 
     private LocalDateTime date;
 
-    private Integer capaciteMax; // Corrigé: Integer au lieu de Long
+    private Integer capaciteMax;
 
     @ManyToOne
     @JsonIgnore
