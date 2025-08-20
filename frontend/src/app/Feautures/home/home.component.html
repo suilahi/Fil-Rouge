@@ -54,36 +54,38 @@
 </section>
 
 <!-- Feature Classes Section -->
-<section class="py-20">
+<section class="py-20  bg-cover bg-center text-white relative" style="background-image: url('assets/images/trainers_bg.png')">
+
   <div class="container mx-auto px-4">
-    <div class="text-center mb-12">
-      <h3 class="text-3xl font-bold border-b-2 inline-block border-yellow-500 pb-2">Featured Classes</h3>
-    </div>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-white shadow-md">
-        <img src="assets/images/feature-thumb1.png" alt="" class="w-full">
-        <div class="p-4">
-          <p class="text-gray-500 text-sm mb-2">16 Dec - 6:30 AM</p>
-          <h4 class="text-xl font-bold"><a href="/classes-detail">Weight Lifting</a></h4>
+    <h3 class="text-2xl md:text-3xl font-extrabold text-center mb-8">Séances à venir</h3>
+
+    <!-- Grille avec 4 colonnes sur desktop -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div *ngFor="let seance of seances | slice:0:4" class="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl transition">
+        <div *ngIf="seance.nomSeance === 'MUSCULATION'">
+          <img src="assets/images/feature-thumb1.png" alt="" class="w-full h-[300px] object-cover">
         </div>
-      </div>
-      <div class="bg-white shadow-md">
-        <img src="assets/images/feature-thumb2.png" alt="" class="w-full">
-        <div class="p-4">
-          <p class="text-gray-500 text-sm mb-2">16 Dec - 6:30 AM</p>
-          <h4 class="text-xl font-bold"><a href="/classes-detail">Daily Yoga</a></h4>
+        <div *ngIf="seance.nomSeance === 'YUGA'">
+          <img src="assets/images/feature-thumb2.png" alt="" class="w-full h-[300px] object-cover">
         </div>
-      </div>
-      <div class="bg-white shadow-md">
-        <img src="assets/images/feature-thumb3.png" alt="" class="w-full">
+        <div *ngIf="seance.nomSeance === 'RUNNING'">
+          <img src="assets/images/feature-thumb3.png" alt="" class="w-full h-[300px] object-cover">
+        </div>
+
+        <div class="bg-orange-500 text-white text-center py-2 font-semibold">
+           {{ seance.nomSeance }}
+        </div>
+
         <div class="p-4">
-          <p class="text-gray-500 text-sm mb-2">16 Dec - 6:30 AM</p>
-          <h4 class="text-xl font-bold"><a href="/classes-detail">Running Way</a></h4>
+          <p class="text-gray-700"><strong>Heure :</strong> {{ seance.dateTime | date:'short' }}</p>
+          <p class="text-gray-700"><strong>Capacité :</strong> {{ seance.capaciteMax }}</p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+
 
 <!-- Trainers Section -->
 <section class="py-20  bg-cover bg-center text-white relative" style="background-image: url('assets/images/trainers_bg.png')">

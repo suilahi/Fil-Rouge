@@ -3,6 +3,7 @@ import jakarta.validation.Valid;
 import org.FilRouge.backend.Dto.SeanceRequest;
 import org.FilRouge.backend.Dto.SeanceResponse;
 import org.FilRouge.backend.Model.*;
+import org.FilRouge.backend.Repository.ReservationRepository;
 import org.FilRouge.backend.Service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +22,9 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private ReservationRepository reservationRepository;
+
     // Membres
 
     @PostMapping("/membres")
@@ -28,14 +32,20 @@ public class AdminController {
         return adminService.addMembre(membre);
     }
 
-    @GetMapping(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "/membres")
-    public List<Membre> getAllMembres() {
+   @GetMapping("/membres")
+   public List<Membre> getAllMembres() {
         return adminService.getAllMembre();
-    }
+
+   }
 
     @GetMapping("/membres/{id}")
     public Membre getMembre(@PathVariable Long id) {
         return adminService.getMembre(id);
+    }
+
+    @PutMapping("/membres/{id}")
+    public Membre updateMembre(@PathVariable Long id, @RequestBody Membre membre) {
+        return adminService.modifierMembre(id, membre);
     }
 
     @DeleteMapping("/membres/{id}")
@@ -83,6 +93,16 @@ public class AdminController {
         return adminService.getAllSeances()
                 .stream()
                 .map(SeanceResponse::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @GetMapping("/membre/{membreId}/seances")
+    public List<SeanceResponse> getSeancesByMembre(@PathVariable Long membreId) {
+        List<Reservation> reservations = reservationRepository.findByMembreId(membreId);
+
+        return reservations.stream()
+                .map(res -> new SeanceResponse(res.getSeance(), res.getId()))
                 .collect(Collectors.toList());
     }
 

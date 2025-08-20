@@ -7,18 +7,19 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("MEMBRE")
-
 public class Membre extends User {
 
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
-    @OneToMany(mappedBy = "membre")
+    @OneToMany(mappedBy = "membre" , cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Seance> seances;
 
 
     @ManyToOne
+    @JoinColumn(name = "abonnement_id")
+
     private Abonnement abonnement;
 
     // Getters & Setters

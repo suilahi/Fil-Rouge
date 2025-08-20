@@ -50,6 +50,20 @@ public class AdminService {
         return membreRepository.save(membre);
     }
 
+    public Membre modifierMembre(Long id, Membre membreDetails) {
+        Membre membre = membreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + id));
+
+        membre.setFullName(membreDetails.getFullName());
+        membre.setEmail(membreDetails.getEmail());
+        membre.setDateDebut(membreDetails.getDateDebut());
+        membre.setDateFin(membreDetails.getDateFin());
+        membre.setPassword(membreDetails.getPassword());
+
+        return membreRepository.save(membre);
+    }
+
+
     public List<Membre> getAllMembre() {
         return membreRepository.findAll();
     }

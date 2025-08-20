@@ -30,7 +30,12 @@
 
         <div class="mb-4">
           <label class="block mb-1 text-purple-600 font-medium">ID Entraîneur</label>
-          <input type="number" formControlName="idEntraineur" class="w-full border text-gray-950 p-2 rounded" required />
+          <select formControlName="idEntraineur" class="w-full text-gray-950 border p-2 rounded" required>
+            <option value="">-- Sélectionner un entraineur --</option>
+            <option *ngFor="let Entraineur of entraineurs" [value]="Entraineur.id">
+              {{ Entraineur.id }}
+            </option>
+          </select>
         </div>
 
         <div class="mb-4">
@@ -44,7 +49,12 @@
 
         <div class="mb-4">
           <label class="block mb-1 text-purple-600 font-medium">ID Membre</label>
-          <input type="number" formControlName="idMembre" class="w-full text-gray-950 border p-2 rounded" required />
+          <select formControlName="idMembre" class="w-full text-gray-950 border p-2 rounded" required>
+            <option value="">-- Sélectionner un membre --</option>
+            <option *ngFor="let membre of membres" [value]="membre.id">
+              {{ membre.id }}
+            </option>
+          </select>
         </div>
 
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">

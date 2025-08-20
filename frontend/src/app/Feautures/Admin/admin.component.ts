@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../core/services/auth/auth.service';
+import { SeanceService } from '../../core/services/Seance/Seance.service';
 import { HttpClientModule } from '@angular/common/http';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 
@@ -11,6 +11,13 @@ export interface Seance {
   capaciteMax: number;
   idEntraineur: number;
   idMembre: number;
+}
+export interface Membre {
+  id: number;
+}
+
+export interface Entraineur {
+  id: number;
 }
 
 @Component({
@@ -29,12 +36,14 @@ export interface Seance {
 export class AdminComponent implements OnInit {
 
   seances: Seance[] = [];
+  membres: Membre[] = [];
+  entraineurs:Entraineur[]=[];
   seanceForm!: FormGroup;
   editingSeanceId: number | null = null; // 👈 Savoir si on modifie ou ajoute
 
 
   constructor(
-    private authservice: AuthService,
+    private seanceservice: SeanceService,
     private fb: FormBuilder
   ) {}
 
@@ -48,16 +57,32 @@ export class AdminComponent implements OnInit {
     });
 
     this.loadSeances();
+    this.loadMembres();
+    this.loadEntraineurs();
   }
 
   loadSeances() {
-    this.authservice.getSeances().subscribe({
+    this.seanceservice.getSeances().subscribe({
       next: (data) => {
         const now = new Date();
         this.seances = data.filter(seance => new Date(seance.dateTime) >= now);
       },
       error: err => console.error('Erreur lors du chargement des séances :', err)
     });
+  }
+
+  loadMembres(){
+    this.seanceservice.getAllMembre().subscribe({
+      next:(data)=>this.membres=data,
+      error:(err)=>console.error('Erreur lors du chargement des membres :', err )
+    });
+  }
+
+  loadEntraineurs(){
+    this.seanceservice.getAllEntraineurs().subscribe({
+      next:(data)=>this.entraineurs=data,
+      error:(err)=>console.error('Erreur lors du chargement des entraineurs :', err )
+    })
   }
 
 
@@ -85,7 +110,7 @@ export class AdminComponent implements OnInit {
 
     if (this.editingSeanceId) {
       // Mode édition
-      this.authservice.updateSeance(this.editingSeanceId, formValue).subscribe({
+      this.seanceservice.updateSeance(this.editingSeanceId, formValue).subscribe({
         next: (updated) => {
           const index = this.seances.findIndex(s => s.idSeance === updated.idSeance);
           if (index !== -1) {
@@ -97,7 +122,7 @@ export class AdminComponent implements OnInit {
       });
     } else {
       // Mode ajout
-      this.authservice.addSeance(formValue).subscribe({
+      this.seanceservice.addSeance(formValue).subscribe({
         next: (seance) => {
           this.seances.push(seance);
           this.closeModal();
@@ -117,12 +142,14 @@ export class AdminComponent implements OnInit {
 
 
   onDelete(id: number | undefined) {
-    this.authservice.deleteSeance(id).subscribe({
+    this.seanceservice.deleteSeance(id).subscribe({
       next: () => {
         this.seances = this.seances.filter(s => s.idSeance !== id);
       },
       error: err => console.error("Erreur lors de la suppression :", err)
     });
   }
+
+
 
 }

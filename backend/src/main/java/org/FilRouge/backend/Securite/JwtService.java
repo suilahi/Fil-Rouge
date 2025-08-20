@@ -26,6 +26,7 @@ public class JwtService {
 
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("id", user.getId());
         extraClaims.put("fullName", user.getFullName());
         extraClaims.put("role", user.getRole());
         // Ajouter les autorités dans le JWT

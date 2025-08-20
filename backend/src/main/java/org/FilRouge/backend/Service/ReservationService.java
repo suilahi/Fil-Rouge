@@ -9,18 +9,20 @@ import org.FilRouge.backend.Repository.SeanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+
 
 @Service
 public class ReservationService {
+
     @Autowired
     private ReservationRepository reservationRepository;
 
     @Autowired
-    private MembreRepository membreRepository;
+    private SeanceRepository seanceRepository;
 
     @Autowired
-    private SeanceRepository seanceRepository;
+    private MembreRepository membreRepository;
 
     public Reservation reserverSeance(Long membreId, Long seanceId) {
         Membre membre = membreRepository.findById(membreId)
@@ -29,7 +31,6 @@ public class ReservationService {
         Seance seance = seanceRepository.findById(seanceId)
                 .orElseThrow(() -> new RuntimeException("Séance introuvable"));
 
-        // Vérifier si le membre a déjà une réservation pour cette séance
         boolean alreadyReserved = reservationRepository.existsByMembreIdAndSeanceId(membreId, seanceId);
         if (alreadyReserved) {
             throw new RuntimeException("Vous avez déjà réservé cette séance.");
@@ -42,5 +43,35 @@ public class ReservationService {
 
         Reservation reservation = new Reservation(membre, seance);
         return reservationRepository.save(reservation);
+    }
+
+    public List<Seance> getAllSeances() {
+        return seanceRepository.findAll();
+    }
+
+    public void annulerSeance(Long seanceId) {
+        if (!seanceRepository.existsById(seanceId)) {
+            throw new RuntimeException("Séance non trouvée avec l'ID : " + seanceId);
+        }
+        seanceRepository.deleteById(seanceId);
+    }
+
+    // Ajouter cette méthode
+    public void annulerReservation(Long reservationId) {
+        if (!reservationRepository.existsById(reservationId)) {
+            throw new RuntimeException("Réservation non trouvée avec l'ID : " + reservationId);
+        }
+        reservationRepository.deleteById(reservationId);
+    }
+
+
+
+    public List<Reservation> getReservationsByMembre(Long membreId) {
+        return reservationRepository.findByMembreId(membreId);
+    }
+
+    // Récupérer les séances (Seance) directement par membre
+    public List<Seance> getSeancesByMembreId(Long membreId) {
+        return reservationRepository.findSeancesByMembreId(membreId);
     }
 }

@@ -1,34 +1,67 @@
-// src/app/core/services/auth/auth.service.ts
-
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-// @ts-ignore
-import { Seance } from '../../models/seance.model';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { Router } from '@angular/router';
+import {catchError, Observable, throwError} from 'rxjs';
+
+export interface RegisterDto {
+  fullName: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
+export interface LoginRequestDTO {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponseDTO {
+  token: string;
+  fullName: string;
+  email: string;
+  role: string;
+  id?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8081/api/admin/seances';
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = 'http://localhost:8081/api/auth';
 
-  addSeance(seance: Seance): Observable<Seance> {
-    return this.http.post<Seance>(this.apiUrl, seance);
+  constructor(private http: HttpClient,
+              private router: Router) { }
+
+  // 🔹 Inscription
+  register(registerData: RegisterDto): Observable<AuthResponseDTO> {
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/register`, registerData);
   }
 
-  getSeances(): Observable<Seance[]> {
-    return this.http.get<Seance[]>(this.apiUrl);
+  // 🔹 Connexion
+  login(loginData: LoginRequestDTO): Observable<AuthResponseDTO> {
+    console.log(loginData)
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}/login`, loginData).pipe(
+      catchError((err: HttpErrorResponse) => {
+        return throwError(() => err);
+      })
+    );
   }
 
-  updateSeance(id: number, seance: Seance): Observable<Seance> {
-    return this.http.put<Seance>(`${this.apiUrl}/${id}`, seance);
+  // 🔹 Déconnexion
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('id');
+    this.router.navigate(['/login']);
   }
 
-  deleteSeance(id: number | undefined): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  // 🔹 Vérifier si l'utilisateur est connecté
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 
-
+  // 🔹 Récupérer le token
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
 }

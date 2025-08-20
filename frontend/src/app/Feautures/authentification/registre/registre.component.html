@@ -6,10 +6,10 @@
 
       <!-- Nom complet -->
       <div>
-        <label for="fullname" class="block text-sm font-medium text-gray-700">Nom complet</label>
-        <input formControlName="fullname" id="fullname" type="text"
+        <label for="fullName" class="block text-sm font-medium text-gray-700">Nom complet</label>
+        <input formControlName="fullName" id="fullName" type="text"
                class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <div *ngIf="registerForm.get('fullname')?.invalid && registerForm.get('fullname')?.touched"
+        <div *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
              class="text-red-500 text-sm mt-1">
           Le nom est requis.
         </div>
@@ -62,7 +62,7 @@
       <!-- Lien vers login -->
       <p class="text-center text-sm text-gray-600 mt-4">
         Déjà un compte ?
-        <a routerLink="/Login" class="text-blue-600 hover:underline">Se connecter</a>
+        <a routerLink="/login" class="text-blue-600 hover:underline">Se connecter</a>
       </p>
     </form>
   </div>

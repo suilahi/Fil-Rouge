@@ -73,10 +73,19 @@
             Contact Us
           </a>
           <a
+            *ngIf="!authService.isLoggedIn()"
             routerLink="/login"
             routerLinkActive="text-white border-b-2 border-orange-400"
-            class="text-gray-300 hover:text-orange-400 px-3 py-2 text-sm font-medium transition-colors duration-200 hover:border-b-2 hover:border-orange-400">
-             Login
+            class="text-gray-300 hover:text-orange-400 px-3 py-2 text-sm font-medium">
+            Login
+          </a>
+
+          <!-- Si l'utilisateur est connecté -->
+          <a
+            *ngIf="authService.isLoggedIn()"
+            (click)="logout()"
+            class="text-gray-300 hover:text-orange-400 px-3 py-2 text-sm font-medium cursor-pointer">
+            Logout
           </a>
         </div>
       </div>

@@ -1,32 +1,62 @@
-package org.FilRouge.backend.Controller;
+    package org.FilRouge.backend.Controller;
 
 
-import org.FilRouge.backend.Model.Reservation;
-import org.FilRouge.backend.Service.ReservationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+    import org.FilRouge.backend.Dto.SeanceResponse;
+    import org.FilRouge.backend.Model.Reservation;
+    import org.FilRouge.backend.Model.Seance;
+    import org.FilRouge.backend.Service.ReservationService;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/reservation")
-public class ReservationController {
+    import java.util.List;
+    import java.util.stream.Collectors;
 
-    @Autowired
-    private ReservationService reservationService;
+    @RestController
+    @RequestMapping("/api/reservation")
+    public class ReservationController {
 
-    @PostMapping("/membre/{membreId}/seance/{seanceId}")
-    public ResponseEntity<String> reserverSeance(
-            @PathVariable Long membreId,
-            @PathVariable Long seanceId) {
+        @Autowired
+        private ReservationService reservationService;
 
-        try {
-            Reservation result = reservationService.reserverSeance(membreId, seanceId);
-            return ResponseEntity.ok("Réservation réussie.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        @GetMapping("/seances")
+        public List<SeanceResponse> getAllSeances() {
+            return reservationService.getAllSeances()
+                    .stream()
+                    .map(SeanceResponse::new)
+                    .collect(Collectors.toList());
         }
-    }
+
+        @PostMapping("/membre/{membreId}/seance/{seanceId}")
+        public ResponseEntity<String> reserverSeance(
+                @PathVariable Long membreId,
+                @PathVariable Long seanceId) {
+
+            try {
+                Reservation result = reservationService.reserverSeance(membreId, seanceId);
+                return ResponseEntity.ok("Réservation réussie.");
+            } catch (RuntimeException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
+
+        @DeleteMapping("/seances/{id}")
+        public void annulerSeance(@PathVariable Long seanceId) {
+            reservationService.annulerSeance(seanceId);
+        }
+
+        @DeleteMapping("seance/{seanceId}/reservation/{id}")
+        public void annulerReservation(@PathVariable Long reservationId, @PathVariable Long seanceId) {
+            reservationService.annulerReservation(reservationId);
+        }
+
+        @GetMapping("/membre/{membreId}/seances")
+        public List<SeanceResponse> getSeancesByMembre(@PathVariable Long membreId) {
+            return reservationService.getReservationsByMembre(membreId)
+                    .stream()
+                    .map(res -> new SeanceResponse(res.getSeance(), res.getId()))
+                    .collect(Collectors.toList());
+        }
+
+
     }

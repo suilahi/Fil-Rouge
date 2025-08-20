@@ -4,6 +4,7 @@ import {SeanceComponent} from './Feautures/seance/seance.component';
 import {RegistreComponent} from './Feautures/authentification/registre/registre.component';
 import {LoginComponent} from './Feautures/authentification/login/login.component';
 import {AdminComponent} from './Feautures/Admin/admin.component';
+import {MembreComponent} from './Feautures/membre/membre.component';
 
 export const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -11,5 +12,6 @@ export const routes: Routes = [
   {path:'seance',component:SeanceComponent},
   {path:'registre',component:RegistreComponent},
   {path:'login',component:LoginComponent},
-  { path: 'admin', component: AdminComponent }
+  { path: 'admin', component: AdminComponent },
+  {path:'membre',component:MembreComponent}
 ];

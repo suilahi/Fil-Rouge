@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {NgIf} from '@angular/common';
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {AuthService} from '../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +17,8 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 export class NavbarComponent {
   isMobileMenuOpen = false;
 
+  constructor(public authService: AuthService) {}
+
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
@@ -25,8 +28,11 @@ export class NavbarComponent {
   }
 
   toggleSearch(): void {
-    // Implémentez votre logique de recherche ici
     console.log('Search toggled');
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
 }
