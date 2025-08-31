@@ -49,14 +49,8 @@ public class ReservationService {
         return seanceRepository.findAll();
     }
 
-    public void annulerSeance(Long seanceId) {
-        if (!seanceRepository.existsById(seanceId)) {
-            throw new RuntimeException("Séance non trouvée avec l'ID : " + seanceId);
-        }
-        seanceRepository.deleteById(seanceId);
-    }
 
-    // Ajouter cette méthode
+
     public void annulerReservation(Long reservationId) {
         if (!reservationRepository.existsById(reservationId)) {
             throw new RuntimeException("Réservation non trouvée avec l'ID : " + reservationId);
@@ -70,8 +64,4 @@ public class ReservationService {
         return reservationRepository.findByMembreId(membreId);
     }
 
-    // Récupérer les séances (Seance) directement par membre
-    public List<Seance> getSeancesByMembreId(Long membreId) {
-        return reservationRepository.findSeancesByMembreId(membreId);
-    }
 }

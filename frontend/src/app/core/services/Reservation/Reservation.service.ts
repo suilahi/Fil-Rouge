@@ -16,11 +16,8 @@ export interface SeanceWithReservation {
 @Injectable({
   providedIn: 'root'
 })
-@Injectable({
-  providedIn: 'root'
-})
 export class ReservationService {
-  private apiUrl = 'http://localhost:8081/api/reservation'; // noter "reservation" singulier
+  private apiUrl = 'http://localhost:8082/api/reservation'; // noter "reservation" singulier
 
   constructor(private http: HttpClient) { }
 
@@ -33,7 +30,6 @@ export class ReservationService {
     return this.http.get<Seance[]>(`${this.apiUrl}/seances`);
   }
 
-
   annulerReservation(reservationId: number | undefined, seanceId: number | undefined): Observable<any> {
     return this.http.delete(`${this.apiUrl}/seance/${seanceId}/reservation/${reservationId}`);
   }
@@ -41,6 +37,4 @@ export class ReservationService {
   getSeanceByMembre(membreId: number | undefined): Observable<SeanceWithReservation[]> {
     return this.http.get<SeanceWithReservation[]>(`${this.apiUrl}/membre/${membreId}/seances`);
   }
-
 }
-

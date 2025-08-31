@@ -15,7 +15,7 @@ import {Entraineur} from '../../Models/Entraineur.model';
   providedIn: 'root'
 })
 export class SeanceService {
-  private apiUrl = 'http://localhost:8081/api/admin';
+  private apiUrl = 'http://localhost:8082/api/admin';
 
   constructor(private http: HttpClient) {}
 

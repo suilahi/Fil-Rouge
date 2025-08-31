@@ -14,10 +14,12 @@ export interface Seance {
 }
 export interface Membre {
   id: number;
+  NomMembre:string;
 }
 
 export interface Entraineur {
   id: number;
+  fullName:string;
 }
 
 @Component({
@@ -52,8 +54,8 @@ export class AdminComponent implements OnInit {
       nomSeance:['',Validators.required],
       dateTime: ['', Validators.required],
       capaciteMax: ['', [Validators.required, Validators.min(1)]],
-      idEntraineur: ['', Validators.required],
-      idMembre: ['', Validators.required]
+      fullName: ['', Validators.required],
+      NomMembre: ['', Validators.required]
     });
 
     this.loadSeances();

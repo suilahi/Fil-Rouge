@@ -1,6 +1,5 @@
 package org.FilRouge.backend.Repository;
 
-import org.FilRouge.backend.Model.Membre;
 import org.FilRouge.backend.Model.Reservation;
 import org.FilRouge.backend.Model.Seance;
 import org.springframework.data.jpa.repository.JpaRepository;

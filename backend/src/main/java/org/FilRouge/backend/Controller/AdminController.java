@@ -83,10 +83,6 @@ public class AdminController {
         return adminService.planifierSeance(request.getNomSeance(), request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
     }
 
-//    @GetMapping("/seances")
-//    public List<Seance> getAllSeances() {
-//        return adminService.getAllSeances();
-//    }
 
     @GetMapping("/seances")
     public List<SeanceResponse> getAllSeances() {

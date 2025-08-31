@@ -29,10 +29,19 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
+
         next: (res) => {
+
           localStorage.setItem('token', res.token);
           localStorage.setItem('id', res.id || '');
-          this.router.navigate(['/home']);
+          localStorage.setItem('role',res.role)
+
+          if (this.authService.getRole()=="ADMIN"){
+            this.router.navigate(['/admin'])
+          }else if (this.authService.getRole()=="MEMBRE") {
+            this.router.navigate(['/membre'])
+          }else (this.authService.getRole()=="ENTRAINEUR")
+          {this.router.navigate(['/entraineur'])}
         },
         error: (err) => {
           console.error('Erreur de connexion', err);

@@ -50,6 +50,7 @@ public class SecurityConfig {
                         // 👉 Routes protégées selon les rôles
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/reservation/**").permitAll()
+                        .requestMatchers("/entraineurs/**").permitAll()
                         // 👉 Swagger (optionnel)
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
 

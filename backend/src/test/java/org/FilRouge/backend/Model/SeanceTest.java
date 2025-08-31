@@ -1,9 +1,6 @@
 package org.FilRouge.backend.Model;
 
 import org.FilRouge.backend.Service.AdminService;
-import org.FilRouge.backend.Model.Seance;
-import org.FilRouge.backend.Model.Membre;
-import org.FilRouge.backend.Model.Entraineur;
 import org.FilRouge.backend.Repository.MembreRepository;
 import org.FilRouge.backend.Repository.EntraineurRepository;
 import org.junit.jupiter.api.Test;

@@ -28,7 +28,7 @@ export interface AuthResponseDTO {
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8081/api/auth';
+  private apiUrl = 'http://localhost:8082/api/auth';
 
   constructor(private http: HttpClient,
               private router: Router) { }
@@ -63,5 +63,14 @@ export class AuthService {
   // 🔹 Récupérer le token
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+
+  getRole(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role || null;
   }
 }

@@ -12,6 +12,4 @@ public interface SeanceRepository extends JpaRepository<Seance, Long> {
 
     List<Seance> findByIdSeance(Seance seance);
 
-
-
 }

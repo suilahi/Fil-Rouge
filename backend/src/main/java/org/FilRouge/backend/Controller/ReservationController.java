@@ -3,7 +3,6 @@
 
     import org.FilRouge.backend.Dto.SeanceResponse;
     import org.FilRouge.backend.Model.Reservation;
-    import org.FilRouge.backend.Model.Seance;
     import org.FilRouge.backend.Service.ReservationService;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.ResponseEntity;
@@ -40,15 +39,15 @@
             }
         }
 
-        @DeleteMapping("/seances/{id}")
-        public void annulerSeance(@PathVariable Long seanceId) {
-            reservationService.annulerSeance(seanceId);
-        }
 
-        @DeleteMapping("seance/{seanceId}/reservation/{id}")
-        public void annulerReservation(@PathVariable Long reservationId, @PathVariable Long seanceId) {
+
+        @DeleteMapping("/seance/{seanceId}/reservation/{reservationId}")
+        public void annuleReservation(
+                @PathVariable Long seanceId,
+                @PathVariable Long reservationId) {
             reservationService.annulerReservation(reservationId);
         }
+
 
         @GetMapping("/membre/{membreId}/seances")
         public List<SeanceResponse> getSeancesByMembre(@PathVariable Long membreId) {
@@ -57,6 +56,5 @@
                     .map(res -> new SeanceResponse(res.getSeance(), res.getId()))
                     .collect(Collectors.toList());
         }
-
-
+        
     }
