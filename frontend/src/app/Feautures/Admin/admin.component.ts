@@ -54,8 +54,8 @@ export class AdminComponent implements OnInit {
       nomSeance:['',Validators.required],
       dateTime: ['', Validators.required],
       capaciteMax: ['', [Validators.required, Validators.min(1)]],
-      fullName: ['', Validators.required],
-      NomMembre: ['', Validators.required]
+      idEntraineur: ['', Validators.required],
+      idMembre: ['', Validators.required]
     });
 
     this.loadSeances();

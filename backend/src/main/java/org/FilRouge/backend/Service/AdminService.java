@@ -83,6 +83,7 @@ public class AdminService {
     // Méthodes liées aux entraîneurs
 
     public Entraineur addEntraineur(Entraineur entraineur) {
+        entraineur.setEmail(entraineur.getEmail());
         entraineur.setPassword(entraineur.getPassword()); // à encoder si besoin
         entraineur.setRole("ENTRAINEUR");
         return entraineurRepository.save(entraineur);
