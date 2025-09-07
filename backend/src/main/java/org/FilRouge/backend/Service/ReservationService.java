@@ -1,8 +1,10 @@
 package org.FilRouge.backend.Service;
 
+import org.FilRouge.backend.Model.Entraineur;
 import org.FilRouge.backend.Model.Membre;
 import org.FilRouge.backend.Model.Reservation;
 import org.FilRouge.backend.Model.Seance;
+import org.FilRouge.backend.Repository.EntraineurRepository;
 import org.FilRouge.backend.Repository.MembreRepository;
 import org.FilRouge.backend.Repository.ReservationRepository;
 import org.FilRouge.backend.Repository.SeanceRepository;
@@ -23,6 +25,9 @@ public class ReservationService {
 
     @Autowired
     private MembreRepository membreRepository;
+
+    @Autowired
+    private EntraineurRepository entraineurRepository;
 
     public Reservation reserverSeance(Long membreId, Long seanceId) {
         Membre membre = membreRepository.findById(membreId)
@@ -63,5 +68,10 @@ public class ReservationService {
     public List<Reservation> getReservationsByMembre(Long membreId) {
         return reservationRepository.findByMembreId(membreId);
     }
+
+    public List<Entraineur> getAllEntraineur() {
+        return entraineurRepository.findAll();
+    }
+
 
 }

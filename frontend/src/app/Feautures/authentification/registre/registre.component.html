@@ -44,7 +44,6 @@
                 class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">-- Sélectionner un rôle --</option>
           <option value="MEMBRE">Membre</option>
-          <option value="FORMATEUR">ENTRAINEUR</option>
         </select>
         <div *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched"
              class="text-red-500 text-sm mt-1">

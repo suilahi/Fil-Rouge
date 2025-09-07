@@ -37,9 +37,6 @@
                     throw new SecurityException("Un administrateur existe déjà. Vous ne pouvez pas en créer un autre.");
                 }
             }
-
-
-
             User utilisateur = new User();
 
             String role = registerDTO.role().toUpperCase();

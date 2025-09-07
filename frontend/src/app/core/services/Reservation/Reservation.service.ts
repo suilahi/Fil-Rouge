@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Seance } from '../../../Feautures/Admin/admin.component';
+import {Entraineur, Seance} from '../../../Feautures/Admin/admin.component';
 
 export interface SeanceWithReservation {
   idSeance: number;
@@ -37,4 +37,8 @@ export class ReservationService {
   getSeanceByMembre(membreId: number | undefined): Observable<SeanceWithReservation[]> {
     return this.http.get<SeanceWithReservation[]>(`${this.apiUrl}/membre/${membreId}/seances`);
   }
+  getAllEntraineurs(): Observable<Entraineur[]> {
+    return this.http.get<Entraineur[]>(`${this.apiUrl}/entraineurs`);
+  }
+
 }

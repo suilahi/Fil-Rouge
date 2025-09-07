@@ -2,6 +2,7 @@
 
 
     import org.FilRouge.backend.Dto.SeanceResponse;
+    import org.FilRouge.backend.Model.Entraineur;
     import org.FilRouge.backend.Model.Reservation;
     import org.FilRouge.backend.Service.ReservationService;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,11 @@
                     .map(res -> new SeanceResponse(res.getSeance(), res.getId()))
                     .collect(Collectors.toList());
         }
-        
+
+        @GetMapping("/entraineurs")
+        public List<Entraineur> getAllEntraineurs() {
+            return reservationService.getAllEntraineur();
+        }
+
+
     }

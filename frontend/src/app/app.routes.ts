@@ -8,6 +8,8 @@ import {MembreComponent} from './Feautures/membre/membre.component';
 import {authGuardsGuard} from './core/guards/auth/auth-guards.guard';
 import {adminGuardsGuard} from './core/guards/admin/admin-guards.guard';
 import {membreGuard} from './core/guards/membre/membre.guard';
+import {EntraineurComponent} from './Feautures/entraineur/entraineur.component';
+import {entraineurGuard} from './core/guards/entraineur/entraineur.guard';
 
 export const routes: Routes = [
   {path:'', component:HomeComponent},
@@ -17,4 +19,5 @@ export const routes: Routes = [
   {path:'login',component:LoginComponent,canActivate:[authGuardsGuard]},
   { path: 'admin', component: AdminComponent ,canActivate:[adminGuardsGuard]},
   {path:'membre',component:MembreComponent,canActivate:[membreGuard]},
+  {path:'entraineur',component:EntraineurComponent,canActivate:[entraineurGuard]}
 ];

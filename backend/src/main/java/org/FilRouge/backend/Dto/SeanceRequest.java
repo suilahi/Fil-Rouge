@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 
 public class SeanceRequest {
 
-    @NotNull(message = "L'ID du membre est requis")
     private Long idMembre;
 
     @NotNull(message = "L'ID de l'entraîneur est requis")

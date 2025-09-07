@@ -1,15 +1,12 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // @ts-ignore
 import { Seance } from '../../models/seance.model';
-
 // @ts-ignore
-import {Membre} from '../../Models/Membre.model';
-
+import { Membre } from '../../Models/Membre.model';
 // @ts-ignore
-import {Entraineur} from '../../Models/Entraineur.model';
+import { Entraineur } from '../../Models/Entraineur.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +16,15 @@ export class SeanceService {
 
   constructor(private http: HttpClient) {}
 
-  addSeance(seance: Seance): Observable<Seance> {
-    return this.http.post<Seance>(`${this.apiUrl}/seances`,seance);
+  addSeance(seance: any): Observable<Seance> {
+    return this.http.post<Seance>(`${this.apiUrl}/seances`, seance);
   }
 
   getSeances(): Observable<Seance[]> {
     return this.http.get<Seance[]>(`${this.apiUrl}/seances`);
   }
 
-  updateSeance(id: number, seance: Seance): Observable<Seance> {
+  updateSeance(id: number, seance: any): Observable<Seance> {
     return this.http.put<Seance>(`${this.apiUrl}/seances/${id}`, seance);
   }
 
@@ -39,9 +36,12 @@ export class SeanceService {
     return this.http.get<Membre[]>(`${this.apiUrl}/membres`);
   }
 
-  getAllEntraineurs():Observable<Entraineur[]>{
-    return this.http.get<Entraineur>(`${this.apiUrl}/entraineurs`)
+  addEntraineur(entraineur: Entraineur): Observable<Entraineur> {
+    return this.http.post<Entraineur>(`${this.apiUrl}/add/entraineurs`, entraineur);
   }
 
 
+  getAllEntraineurs(): Observable<Entraineur[]> {
+    return this.http.get<Entraineur[]>(`${this.apiUrl}/entraineurs`);
+  }
 }

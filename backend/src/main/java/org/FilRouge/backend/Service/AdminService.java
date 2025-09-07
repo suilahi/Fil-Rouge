@@ -3,6 +3,7 @@ package org.FilRouge.backend.Service;
 import org.FilRouge.backend.Model.*;
 import org.FilRouge.backend.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,13 @@ public class AdminService {
 
     @Autowired
     private SeanceRepository seanceRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private static final String ACTION_1 = "Membre non trouvé avec l'ID : ";
+    private static final String ACTION_2 ="Entraineur non trouvé avec l'ID :";
+    private static final String ACTION_3="Séance non trouvée avec l'ID : ";
 
     // Méthodes liées aux matériels
 
@@ -45,14 +53,14 @@ public class AdminService {
     // Méthodes liées aux membres
 
     public Membre addMembre(Membre membre) {
-        membre.setPassword(membre.getPassword()); // à encoder si besoin
+        membre.setPassword(membre.getPassword());
         membre.setRole("MEMBRE");
         return membreRepository.save(membre);
     }
 
     public Membre modifierMembre(Long id, Membre membreDetails) {
         Membre membre = membreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new RuntimeException( ACTION_1 + id));
 
         membre.setFullName(membreDetails.getFullName());
         membre.setEmail(membreDetails.getEmail());
@@ -70,12 +78,12 @@ public class AdminService {
 
     public Membre getMembre(Long id) {
         return membreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new RuntimeException( ACTION_1 + id));
     }
 
     public void deleteMembre(Long id) {
         if (!membreRepository.existsById(id)) {
-            throw new RuntimeException("Membre non trouvé avec l'ID : " + id);
+            throw new RuntimeException( ACTION_1 + id);
         }
         membreRepository.deleteById(id);
     }
@@ -83,9 +91,16 @@ public class AdminService {
     // Méthodes liées aux entraîneurs
 
     public Entraineur addEntraineur(Entraineur entraineur) {
-        entraineur.setEmail(entraineur.getEmail());
-        entraineur.setPassword(entraineur.getPassword()); // à encoder si besoin
+        if (entraineurRepository.findByEmail(entraineur.getEmail()).isPresent()) {
+            // Option 1 : retourner null ou gérer l'exception
+            throw new RuntimeException("Email déjà utilisé !");
+        }
+
+        // Encoder le mot de passe et définir le rôle
+        entraineur.setPassword(passwordEncoder.encode(entraineur.getPassword()));
         entraineur.setRole("ENTRAINEUR");
+
+        // Sauvegarder l'entraîneur
         return entraineurRepository.save(entraineur);
     }
 
@@ -95,28 +110,25 @@ public class AdminService {
 
     public Entraineur getEntraineur(Long id) {
         return entraineurRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'ID : " + id));
+                .orElseThrow(() -> new RuntimeException(ACTION_2 + id));
     }
 
     public void deleteEntraineur(Long id) {
         if (!entraineurRepository.existsById(id)) {
-            throw new RuntimeException("Entraîneur non trouvé avec l'ID : " + id);
+            throw new RuntimeException(ACTION_2+ id);
         }
         entraineurRepository.deleteById(id);
     }
 
     // Méthodes liées aux séances
 
-    public Seance planifierSeance(String nomSeance, Long idMembre, Long idCoach, LocalDateTime dateTime, Integer capaciteMax) {
+    public Seance planifierSeance(String nomSeance, Long idCoach, LocalDateTime dateTime, Integer capaciteMax) {
         if (dateTime.isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Impossible de planifier une séance dans le passé");
         }
 
-        Membre membre = membreRepository.findById(idMembre)
-                .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + idMembre));
-
         Entraineur entraineur = entraineurRepository.findById(idCoach)
-                .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'ID : " + idCoach));
+                .orElseThrow(() -> new RuntimeException(ACTION_2 + idCoach));
 
         List<Seance> seancesEntraineur = seanceRepository.findByEntraineurAndDateBetween(
                 entraineur,
@@ -130,7 +142,6 @@ public class AdminService {
 
         Seance seance = new Seance();
         seance.setNomSeance(nomSeance);
-        seance.setMembre(membre);
         seance.setEntraineur(entraineur);
         seance.setDate(dateTime);
         seance.setCapaciteMax(capaciteMax != null ? capaciteMax : 1);
@@ -140,13 +151,13 @@ public class AdminService {
 
     public Seance modifierSeance(String nomSeance,Long idSeance, Long idMembre, Long idCoach, LocalDateTime date, Integer capaciteMax) {
         Seance seance = seanceRepository.findById(idSeance)
-                .orElseThrow(() -> new RuntimeException("Séance non trouvée avec l'ID : " + idSeance));
+                .orElseThrow(() -> new RuntimeException( ACTION_3+ idSeance));
 
         Membre membre = membreRepository.findById(idMembre)
-                .orElseThrow(() -> new RuntimeException("Membre non trouvé avec l'ID : " + idMembre));
+                .orElseThrow(() -> new RuntimeException( ACTION_1 + idMembre));
 
         Entraineur entraineur = entraineurRepository.findById(idCoach)
-                .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'ID : " + idCoach));
+                .orElseThrow(() -> new RuntimeException(ACTION_2 + idCoach));
 
         seance.setNomSeance(nomSeance);
         seance.setDate(date);
@@ -160,7 +171,7 @@ public class AdminService {
 
     public void annulerSeance(Long idSeance) {
         if (!seanceRepository.existsById(idSeance)) {
-            throw new RuntimeException("Séance non trouvée avec l'ID : " + idSeance);
+            throw new RuntimeException(ACTION_3 + idSeance);
         }
         seanceRepository.deleteById(idSeance);
     }
@@ -171,6 +182,6 @@ public class AdminService {
 
     public Seance getSeance(Long id) {
         return seanceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Séance non trouvée avec l'ID : " + id));
+                .orElseThrow(() -> new RuntimeException(ACTION_3 + id));
     }
 }

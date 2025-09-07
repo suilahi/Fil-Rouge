@@ -15,6 +15,7 @@ export class MembreComponent implements OnInit {
   seances: Seance[] = [];
   mesSeances: SeanceWithReservation[] = [];
   membreId?: number;
+  entraineurs: { id: number; fullName: string }[] = [];
 
   private reservationService = inject(ReservationService);
   private jwtService = inject(JwtServiceService);
@@ -27,22 +28,49 @@ export class MembreComponent implements OnInit {
     this.userPayload = this.jwtService.getDecodedToken(this.token);
     this.membreId = this.userPayload?.id;
 
-    this.loadSeances();
-    this.loadMesSeances();
+    // Charger entraîneurs et séances après
+    this.loadEntraineurs();
   }
 
-  //  toutes les séances futures
+  /** Charger tous les entraîneurs depuis le backend */
+  loadEntraineurs() {
+    this.reservationService.getAllEntraineurs().subscribe({
+      next: (data) => {
+        this.entraineurs = data.map(e => ({ id: e.id, fullName: e.fullName }));
+        this.loadSeances();
+        this.loadMesSeances();
+      },
+      error: (err) => console.error('Erreur chargement des entraîneurs :', err)
+    });
+  }
+
+  /** Récupérer le nom complet d'un entraîneur par ID */
+  getEntraineurName(id?: number): string {
+    if (!id) return 'Inconnu';
+    const entraineur = this.entraineurs.find(e => e.id === id);
+    return entraineur ? entraineur.fullName : 'Inconnu';
+  }
+
+  /** Charger toutes les séances futures avec mapping entraîneur */
   loadSeances() {
     this.reservationService.getSeances().subscribe({
       next: (data) => {
         const now = new Date();
-        this.seances = data.filter(seance => new Date(seance.dateTime) >= now);
+        this.seances = data
+          .filter(seance => new Date(seance.dateTime) >= now)
+          .map(seance => ({
+            ...seance,
+            entraineur: {
+              id: seance.entraineur?.id || seance.idEntraineur || 0,
+              fullName: this.getEntraineurName(seance.entraineur?.id || seance.idEntraineur)
+            }
+          }));
       },
-      error: err => console.error('Erreur lors du chargement des séances :', err)
+      error: (err) => console.error('Erreur chargement des séances :', err)
     });
   }
 
-  // Réserver une séance
+  /** Réserver une séance */
   reserverSeance(seanceId?: number) {
     if (!this.membreId || !seanceId) return;
 
@@ -52,24 +80,30 @@ export class MembreComponent implements OnInit {
         this.loadMesSeances();
         this.loadSeances();
       },
-      error: err => console.error('Erreur lors de la réservation :', err)
+      error: (err) => console.error('Erreur réservation :', err)
     });
   }
 
-  //  séances réservées
+  /** Charger les séances réservées par le membre */
   loadMesSeances() {
     if (!this.membreId) return;
 
     this.reservationService.getSeanceByMembre(this.membreId).subscribe({
       next: (data) => {
-        this.mesSeances = data;
+        this.mesSeances = data.map(s => ({
+          ...s,
+          entraineur: {
+            id: s.idEntraineur || 0,
+            fullName: this.getEntraineurName(s.idEntraineur)
+          }
+        }));
         console.log("Mes séances :", this.mesSeances);
       },
-      error: (err) => console.error("Erreur lors du chargement des séances réservées :", err)
+      error: (err) => console.error("Erreur chargement des séances réservées :", err)
     });
   }
 
-
+  /** Annuler une réservation */
   annulerReservation(reservationId?: number, seanceId?: number) {
     if (!reservationId || !seanceId) return;
 
@@ -79,7 +113,7 @@ export class MembreComponent implements OnInit {
         this.loadMesSeances();
         this.loadSeances();
       },
-      error: err => console.error("Erreur lors de l'annulation :", err)
+      error: (err) => console.error("Erreur annulation :", err)
     });
   }
 }

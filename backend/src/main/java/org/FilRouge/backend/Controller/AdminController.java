@@ -55,10 +55,7 @@ public class AdminController {
 
     // Entraîneurs
 
-    @PostMapping("/entraineurs")
-    public Entraineur addEntraineur(@RequestBody Entraineur entraineur) {
-        return adminService.addEntraineur(entraineur);
-    }
+
 
     @GetMapping("/entraineurs")
     public List<Entraineur> getAllEntraineurs() {
@@ -80,7 +77,7 @@ public class AdminController {
     @PostMapping("/seances")
     public Seance planifierSeance(@Valid @RequestBody SeanceRequest request) {
         LocalDateTime date = LocalDateTime.parse(request.getDateTime());
-        return adminService.planifierSeance(request.getNomSeance(), request.getIdMembre(), request.getIdEntraineur(), date, request.getCapaciteMax());
+        return adminService.planifierSeance(request.getNomSeance(),  request.getIdEntraineur(), date, request.getCapaciteMax());
     }
 
 
