@@ -16,6 +16,8 @@ export class MembreComponent implements OnInit {
   mesSeances: SeanceWithReservation[] = [];
   membreId?: number;
   entraineurs: { id: number; fullName: string }[] = [];
+  currentUserFullName: string = '';
+
 
   private reservationService = inject(ReservationService);
   private jwtService = inject(JwtServiceService);
@@ -27,6 +29,9 @@ export class MembreComponent implements OnInit {
     this.token = localStorage.getItem("token");
     this.userPayload = this.jwtService.getDecodedToken(this.token);
     this.membreId = this.userPayload?.id;
+    this.currentUserFullName = this.userPayload?.fullName || '';
+
+
 
     // Charger entraîneurs et séances après
     this.loadEntraineurs();

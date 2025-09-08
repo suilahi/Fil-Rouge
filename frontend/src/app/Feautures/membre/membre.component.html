@@ -1,3 +1,7 @@
+<p class="text-xl font-semibold mb-4">
+  <span class="text-white">👋 Salut </span>
+  <span class="text-orange-400">{{ currentUserFullName }}</span>
+</p>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-2 mb-2">
   <!-- Séances disponibles -->
   <div *ngFor="let seance of seances"
@@ -14,8 +18,8 @@
       <button
         type="button"
         (click)="reserverSeance(seance.idSeance)"
-        class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition">
-        ✅ Réserver
+        class="w-full bg-blue-900 hover:bg-blue-400 text-white px-4 py-2 rounded-lg shadow-md transition">
+         Réserver
       </button>
     </div>
   </div>
@@ -58,8 +62,8 @@
       <button
         type="button"
         (click)="annulerReservation(seance.reservationId, seance.idSeance)"
-        class="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md transition">
-        ❌ Annuler
+        class="w-full bg-orange-400 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transition">
+        Annuler
       </button>
     </div>
   </div>

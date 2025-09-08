@@ -19,4 +19,8 @@ public interface SeanceRepository extends JpaRepository<Seance, Long> {
             " where utilisateur.full_name= \"rida\";",nativeQuery = true)
     List<Seance> findByFullName(String fullName);
 
+    List<Seance> findByEntraineurId(Long entraineurId);
+
 }
+
+

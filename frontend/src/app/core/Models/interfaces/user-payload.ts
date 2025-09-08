@@ -1,5 +1,5 @@
 export interface UserPayload {
   id:number;
-  fullname:string;
+  fullName:string;
   role:string
 }

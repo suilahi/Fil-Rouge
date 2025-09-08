@@ -1,10 +1,15 @@
 package org.FilRouge.backend.Service;
 
 import org.FilRouge.backend.Model.Entraineur;
+import org.FilRouge.backend.Model.Seance;
 import org.FilRouge.backend.Repository.EntraineurRepository;
 import org.FilRouge.backend.Repository.SeanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EntraineurService {
@@ -35,5 +40,20 @@ public class EntraineurService {
         existingEntraineur.setSeances(newEntraineur.getSeances());
 
         return entraineurRepository.save(existingEntraineur);
+    }
+
+
+    public List<Seance> getAllSeances() {
+        return seanceRepository.findAll();
+    }
+
+    public List<Seance> getSeancesForCurrentEntraineur() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // email stocké dans le JWT
+
+        Entraineur entraineur = entraineurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Entraîneur non trouvé avec l'email : " + email));
+
+        return seanceRepository.findByEntraineurId(entraineur.getId());
     }
 }

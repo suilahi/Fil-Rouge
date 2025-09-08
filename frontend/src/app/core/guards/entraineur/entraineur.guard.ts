@@ -12,7 +12,7 @@ export const entraineurGuard: CanActivateFn = (route, state) => {
     return true;
   } else {
     alert('Access denied: entraineurs only');
-    router.navigate(['/home']);
+    router.navigate(['/entraineur']);
     return false;
   }
   return true;
